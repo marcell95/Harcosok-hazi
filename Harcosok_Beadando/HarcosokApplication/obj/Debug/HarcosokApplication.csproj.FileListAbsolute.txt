@@ -1,0 +1,15 @@
+C:\Users\MasterZeigh\Desktop\Schule\Ujabb C#\Harcosok_Beadando\HarcosokApplication\bin\Debug\HarcosokApplication.exe.config
+C:\Users\MasterZeigh\Desktop\Schule\Ujabb C#\Harcosok_Beadando\HarcosokApplication\bin\Debug\HarcosokApplication.exe
+C:\Users\MasterZeigh\Desktop\Schule\Ujabb C#\Harcosok_Beadando\HarcosokApplication\bin\Debug\HarcosokApplication.pdb
+C:\Users\MasterZeigh\Desktop\Schule\Ujabb C#\Harcosok_Beadando\HarcosokApplication\bin\Debug\Google.Protobuf.dll
+C:\Users\MasterZeigh\Desktop\Schule\Ujabb C#\Harcosok_Beadando\HarcosokApplication\bin\Debug\MySql.Data.dll
+C:\Users\MasterZeigh\Desktop\Schule\Ujabb C#\Harcosok_Beadando\HarcosokApplication\bin\Debug\Google.Protobuf.xml
+C:\Users\MasterZeigh\Desktop\Schule\Ujabb C#\Harcosok_Beadando\HarcosokApplication\bin\Debug\MySql.Data.xml
+C:\Users\MasterZeigh\Desktop\Schule\Ujabb C#\Harcosok_Beadando\HarcosokApplication\obj\Debug\HarcosokApplication.csprojAssemblyReference.cache
+C:\Users\MasterZeigh\Desktop\Schule\Ujabb C#\Harcosok_Beadando\HarcosokApplication\obj\Debug\HarcosokApplication.Form1.resources
+C:\Users\MasterZeigh\Desktop\Schule\Ujabb C#\Harcosok_Beadando\HarcosokApplication\obj\Debug\HarcosokApplication.Properties.Resources.resources
+C:\Users\MasterZeigh\Desktop\Schule\Ujabb C#\Harcosok_Beadando\HarcosokApplication\obj\Debug\HarcosokApplication.csproj.GenerateResource.cache
+C:\Users\MasterZeigh\Desktop\Schule\Ujabb C#\Harcosok_Beadando\HarcosokApplication\obj\Debug\HarcosokApplication.csproj.CoreCompileInputs.cache
+C:\Users\MasterZeigh\Desktop\Schule\Ujabb C#\Harcosok_Beadando\HarcosokApplication\obj\Debug\HarcosokApplication.csproj.CopyComplete
+C:\Users\MasterZeigh\Desktop\Schule\Ujabb C#\Harcosok_Beadando\HarcosokApplication\obj\Debug\HarcosokApplication.exe
+C:\Users\MasterZeigh\Desktop\Schule\Ujabb C#\Harcosok_Beadando\HarcosokApplication\obj\Debug\HarcosokApplication.pdb
