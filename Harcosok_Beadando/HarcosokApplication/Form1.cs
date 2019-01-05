@@ -24,14 +24,21 @@ namespace HarcosokApplication
             conn.Open();
 
             AdatFrissit();
-        }
 
+    }
+
+        private int harcosId;
 
         void AdatFrissit()
         {
+
+            comboBox1Kepesseghasznaloja.Text = "";
+            textBox2KepessegNeve.Text = "";
+            textBox3KepessegLeirasa.Text = "";
             listBox2Kepessegek.Items.Clear();
             listBox1Harcosok.Items.Clear();
             comboBox1Kepesseghasznaloja.Items.Clear();
+            textBox4KepessegModositasa.Text = "";
 
             var command = conn.CreateCommand();
             command.CommandText = @"
@@ -45,72 +52,11 @@ namespace HarcosokApplication
                 {
                     string nev = reader.GetString("nev");
                     DateTime letrehozas = reader.GetDateTime("letrehozas");
-                    string sor = string.Format("{1:yyyy. MM. dd.}: {0}", nev, letrehozas);
+                    string sor = string.Format("{1:$yyyy. MM. dd.}: {0}", nev, letrehozas);
                     listBox1Harcosok.Items.Add(sor);
                     comboBox1Kepesseghasznaloja.Items.Add(nev);
                 }
             }
-            /*
-            var cmd = conn.CreateCommand();
-
-            cmd.CommandText = @"
-                    SELECT  nev, fajta, orokbefogadas_datum 
-                    FROM kutyak 
-                    ORDER BY orokbefogadas_datum, nev
-                ";
-
-            var dt = new DataTable();
-            var adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
-            dataGridView1.DataSource = dt;
-
-            dt.TableNewRow += (sender, e) =>
-            {
-                var nev = e.Row["nev"];
-                var fajta = e.Row["fajta"];
-                var datum = e.Row["orokbefogadas_datum"];
-
-                var InsertCmd = conn.CreateCommand();
-                command.CommandText = @"INSERT INTO kutyak
-                    (nev, fajta, orokbefogadas_datum)
-                    VALUES
-                    (@nev, @fajta, @orokbe)
-                ";
-                command.Parameters.AddWithValue("@nev", nev);
-                command.Parameters.AddWithValue("@fajta", fajta);
-                command.Parameters.AddWithValue("@orokbe", datum);
-                command.ExecuteNonQuery();
-                try
-                {
-                    InsertCmd.ExecuteNonQuery();
-                }
-                catch (Exception)
-                {
-                    e.Row.RowError = "Hibás adat!";
-                    return;
-                }
-
-            };
-
-            dt.ColumnChanged += (sender, e) =>
-            {
-                //var onev = e.Column.ColumnName;
-                var id = e.Row["id"];
-                //if (onev == "nev")
-                //{
-                var UpdateCommand = conn.CreateCommand();
-                UpdateCommand.CommandText = @"
-                    UPDATE kutyak SET  fajta = @fajta, orokbefogadas_datum = @datum WHERE id = @id
-                ";
-                UpdateCommand.Parameters.AddWithValue("@nev", e.Row["nev"]);
-                UpdateCommand.Parameters.AddWithValue("@fajta", e.Row["fajta"]);
-                UpdateCommand.Parameters.AddWithValue("@orokbe", e.Row["orokbefogadas_datum"]);
-                UpdateCommand.Parameters.AddWithValue("@id", id);
-                UpdateCommand.ExecuteNonQuery();
-                //}
-
-
-            };*/
         }
 
 
@@ -150,12 +96,13 @@ namespace HarcosokApplication
             AdatFrissit();
         }
 
+
+
         private void button2Hozzaadas_Click(object sender, EventArgs e)
         {
-            string nev = comboBox1Kepesseghasznaloja.Text;
             string kepnev = textBox2KepessegNeve.Text;
             string leiras = textBox3KepessegLeirasa.Text;
-            int harcosId;
+            string nev = comboBox1Kepesseghasznaloja.Text;
 
             var idKeresesCommand = conn.CreateCommand();
             idKeresesCommand.CommandText = @"
@@ -163,15 +110,19 @@ namespace HarcosokApplication
                 ";
             idKeresesCommand.Parameters.AddWithValue("@nev", nev);
 
-            /*
+            
             using (var reader = idKeresesCommand.ExecuteReader())
             {
                 while (reader.Read())
                 {
                     //harcosId = reader.GetInt32(0);
+
+                    harcosId = int.Parse(reader["id"].ToString());
+
+                    MessageBox.Show("A harcos idja: "+harcosId);
                 }
             }
-            
+            /*
             MySqlDataReader myReader;
             myReader = idKeresesCommand.ExecuteReader();
             while (myReader.Read())
@@ -179,8 +130,7 @@ namespace HarcosokApplication
                 harcosId = myReader.GetInt32(0);
             }*/
 
-
-            harcosId = (int)idKeresesCommand.ExecuteScalar();
+            //harcosId = (int)idKeresesCommand.ExecuteScalar();
 
             var lekerdezesCommand = conn.CreateCommand();
             lekerdezesCommand.CommandText = @"
@@ -191,18 +141,18 @@ namespace HarcosokApplication
             long db = (long)lekerdezesCommand.ExecuteScalar();
             if (db > 0)
             {
-                MessageBox.Show("Ilyen képesség mar van");
+                MessageBox.Show("Ilyen képesség már van");
                 return;
             }
 
             var command = conn.CreateCommand();
             command.CommandText = @"INSERT INTO `kepessegek` 
                     (`id`, `nev`, `leiras`, `harcos_id`) 
-                    VALUES (@kepnev, @leiras, @harcosId);
+                    VALUES (NULL, @kepnev, @leiras, @harcosId);
                 ";
-            command.Parameters.AddWithValue("@kepnev", nev);
+            command.Parameters.AddWithValue("@kepnev", kepnev);
             command.Parameters.AddWithValue("@leiras", leiras);
-            command.Parameters.AddWithValue("@harcosId", Convert.ToInt32(harcosId));
+            command.Parameters.AddWithValue("@harcosId", harcosId);
             command.ExecuteNonQuery();
             AdatFrissit();
         }
@@ -210,19 +160,56 @@ namespace HarcosokApplication
         private void listBox1Harcosok_SelectedIndexChanged(object sender, EventArgs e)
         {
             listBox2Kepessegek.Items.Clear();
+            
+            string nevNyers = listBox1Harcosok.Text;
+            
+            // Remove a substring from the middle of the string.
+            string toRemove = "$";
+            string nev = string.Empty;
+            int i = nevNyers.IndexOf(toRemove);
+            if (i >= 0)
+            {
+                nev = nevNyers.Remove(i, 16);
+            }
+
+            //MessageBox.Show("A név: " + nev + "\nA volt név: " + nevNyers);
+
+
+            var idKeresesCommand = conn.CreateCommand();
+            idKeresesCommand.CommandText = @"
+                    SELECT id FROM harcosok where nev = @nev
+                    ";
+
+            idKeresesCommand.Parameters.AddWithValue("@nev", nev);
+
+
+            using (var reader = idKeresesCommand.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    //harcosId = reader.GetInt32(0);
+
+                    harcosId = int.Parse(reader["id"].ToString());
+
+                    //MessageBox.Show("A harcos idja: " + harcosId);
+                }
+            }
 
             var command = conn.CreateCommand();
             command.CommandText = @"
-                    SELECT  nev 
+                    SELECT nev
                     FROM kepessegek 
+                    WHERE harcos_id = @harcosId
                     ORDER BY nev
                 ";
+            command.Parameters.AddWithValue("@harcosId", harcosId);
+
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    string nev = reader.GetString("nev");
-                    string sor = string.Format("{0}", nev);
+                    string kepnev = reader.GetString("nev");
+                    string sor = string.Format("{0}", kepnev);
                     listBox2Kepessegek.Items.Add(sor);
                 }
             }
@@ -243,9 +230,49 @@ namespace HarcosokApplication
             {
                 while (reader.Read())
                 {
-                    textBox4KepessegModositasa.Text = reader.GetString("kepnev");
+                    textBox4KepessegModositasa.Text = reader.GetString("leiras");
                 }
             }
+        }
+
+        private void button3Modositas_Click(object sender, EventArgs e)
+        {
+            string kepnev = listBox2Kepessegek.Text;
+            var command = conn.CreateCommand();
+            command.CommandText = @"
+                    UPDATE kepessegek SET leiras = @leiras WHERE nev = @kepnev
+                ";
+            command.Parameters.AddWithValue("@leiras", textBox4KepessegModositasa.Text);
+            command.Parameters.AddWithValue("@kepnev", kepnev);
+            int sorok = command.ExecuteNonQuery();
+            if (sorok == 0)
+            {
+                MessageBox.Show("Nincs ilyen nevű képesség.");
+            }
+
+            AdatFrissit();
+        }
+
+        private void button4Torles_Click(object sender, EventArgs e)
+        {
+            string kepnev;
+            if (listBox2Kepessegek.Text == "")
+            {
+                MessageBox.Show("Nincs képesség kijelölve.");
+            } else
+            {
+                kepnev = listBox2Kepessegek.Text;
+                var command = conn.CreateCommand();
+                command.CommandText = @"
+                    DELETE FROM kepessegek WHERE nev = @kepnev
+                ";
+                command.Parameters.AddWithValue("@kepnev", kepnev);
+                command.ExecuteNonQuery();
+
+                AdatFrissit();
+            }
+
+            
         }
     }
 }

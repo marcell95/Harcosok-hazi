@@ -134,6 +134,7 @@
             this.button3Modositas.TabIndex = 9;
             this.button3Modositas.Text = "Módosítás";
             this.button3Modositas.UseVisualStyleBackColor = true;
+            this.button3Modositas.Click += new System.EventHandler(this.button3Modositas_Click);
             // 
             // button4Torles
             // 
@@ -143,6 +144,7 @@
             this.button4Torles.TabIndex = 10;
             this.button4Torles.Text = "Törlés";
             this.button4Torles.UseVisualStyleBackColor = true;
+            this.button4Torles.Click += new System.EventHandler(this.button4Torles_Click);
             // 
             // label1
             // 
